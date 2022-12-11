@@ -1,42 +1,35 @@
-import { IgApiClient } from "instagram-private-api";
-import { sample } from "lodash";
-import * as dotenv from "dotenv";
-
-dotenv.config();
-
-const ig = new IgApiClient();
-// You must generate device id's before login.
-// Id's generated based on seed
-// So if you pass the same value as first argument - the same id's are generated every time
-
-ig.state.generateDevice(process.env.IG_USERNAME);
+import { postOtherToChannel, postPhotoToChannel, telegramInit } from "./tgram";
+import { getUser, getUserStories, igInit } from "./ig";
 
 (async () => {
-  // Execute all requests prior to authorization in the real Android application
-  // Not required but recommended
-  await ig.simulate.preLoginFlow();
-  const loggedInUser = await ig.account.login(
-    process.env.IG_USERNAME,
-    process.env.IG_PASSWORD
+  await igInit();
+  await telegramInit();
+
+  const user = await getUser("doctor.chrome");
+  const stories = await getUserStories(user);
+
+  await Promise.all(
+    stories.map(async (storyItem) => {
+      if (storyItem.media_type === 1) {
+        postPhotoToChannel(
+          storyItem.image_versions2.candidates[0].url,
+          parseInt(storyItem.pk),
+          "psychofact",
+          "New Story"
+        );
+      }
+      if (storyItem.media_type === 2) {
+        postOtherToChannel(
+          storyItem.video_versions[0].url,
+          parseInt(storyItem.pk),
+          "psychofact",
+          "New Story"
+        );
+      }
+    })
   );
-  // The same as preLoginFlow()
-  // Optionally wrap it to process.nextTick so we dont need to wait ending of this bunch of requests
-  process.nextTick(async () => await ig.simulate.postLoginFlow());
-  // Create UserFeed instance to get loggedInUser's posts
-  const userFeed = ig.feed.user(loggedInUser.pk);
-  const myPostsFirstPage = await userFeed.items();
-  // All the feeds are auto-paginated, so you just need to call .items() sequentially to get next page
-  const myPostsSecondPage = await userFeed.items();
-  await ig.media.like({
-    // Like our first post from first page or first post from second page randomly
-    mediaId:
-      sample([myPostsFirstPage[0].id, myPostsSecondPage[0].id]) ||
-      myPostsSecondPage[0].id,
-    moduleInfo: {
-      module_name: "profile",
-      user_id: loggedInUser.pk,
-      username: loggedInUser.username,
-    },
-    d: sample([0, 1]) || 1,
-  });
 })();
+
+function delay(time: number) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
