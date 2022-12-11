@@ -1,5 +1,6 @@
 import {
   IgApiClient,
+  ReelsMediaFeedResponseItem,
   StoryServiceInput,
   UserRepositorySearchResponseUsersItem,
 } from "instagram-private-api";
@@ -47,6 +48,6 @@ export const getUserStories = async (
   return storyItems;
 };
 
-export const markStorySeen = async (story: StoryServiceInput) => {
-  ig.story.seen(story);
+export const markStorySeen = async (story: ReelsMediaFeedResponseItem) => {
+  ig.story.seen([story]);
 };
