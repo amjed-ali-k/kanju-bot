@@ -35,6 +35,7 @@ export type UsersType = {
   username: string;
   message: string;
   forwardChannel: string;
+  forwardGroup: string;
 };
 
 export const getUsersToFetch = async () => {
@@ -45,6 +46,60 @@ export const populateUsers = async () => {
   await config.put({
     value: "10",
     key: "intreval",
+  });
+  await users.put({
+    username: "surya_rayaroth",
+    message: "#surya",
+    forwardChannel: null,
+    forwardGroup: "-741999432",
+  });
+  await users.put({
+    username: "aryaarayaroth",
+    message: "#arya",
+    forwardChannel: null,
+    forwardGroup: "-741999432",
+  });
+  await users.put({
+    username: "jithina_g__",
+    message: "#jithina",
+    forwardChannel: null,
+    forwardGroup: "-741999432",
+  });
+  await users.put({
+    username: "_.jbak._",
+    message: "#jumaila",
+    forwardChannel: null,
+    forwardGroup: "-741999432",
+  });
+  await users.put({
+    username: "_sanu_._sharuf_",
+    message: "#sana",
+    forwardChannel: null,
+    forwardGroup: "-741999432",
+  });
+  await users.put({
+    username: "smitaah_",
+    message: "#smitha",
+    forwardChannel: null,
+    forwardGroup: "-741999432",
+  });
+  await users.put({
+    username: "_a_nj_uu__",
+    message: "#anju",
+    forwardChannel: null,
+    forwardGroup: "-741999432",
+  });
+  await users.put({
+    username: "_jitha__",
+    message: "#jitha",
+    forwardChannel: null,
+    forwardGroup: "-741999432",
+  });
+  await users.put({
+    username: "darsana_tomy",
+    message: "#darshana",
+    forwardChannel: null,
+    forwardGroup: "-741999432",
   });
 };
 

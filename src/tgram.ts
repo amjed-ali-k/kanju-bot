@@ -24,22 +24,18 @@ type ChannelInfo = {
 export const postPhotoToChannel = async (
   url: string,
   uid?: number,
-  username?: string,
   message?: string,
-  channel?: { channelId: string; accessHash: string }
+  dest?: {
+    username?: string;
+    groupId?: string;
+    channel?: { channelId: string; accessHash: string };
+  }
 ) => {
   return telegram.invoke(
     new Api.messages.SendMedia({
       peer:
-        username ||
-        new Api.InputPeerChannel({
-          channelId: BigInt(
-            channel?.channelId || ""
-          ) as unknown as bigInt.BigInteger,
-          accessHash: BigInt(
-            channel?.accessHash || ""
-          ) as unknown as bigInt.BigInteger,
-        }),
+        dest?.username ||
+        (BigInt(dest?.groupId || false) as unknown as bigInt.BigInteger),
       media: new Api.InputMediaPhotoExternal({
         url,
       }),
@@ -55,22 +51,18 @@ export const postPhotoToChannel = async (
 export const postOtherToChannel = async (
   url: string,
   uid?: number,
-  username?: string,
   message?: string,
-  channel?: { channelId: string; accessHash: string }
+  dest?: {
+    username?: string;
+    groupId?: string;
+    channel?: { channelId: string; accessHash: string };
+  }
 ) => {
   return telegram.invoke(
     new Api.messages.SendMedia({
       peer:
-        username ||
-        new Api.InputPeerChannel({
-          channelId: BigInt(
-            channel?.channelId || ""
-          ) as unknown as bigInt.BigInteger,
-          accessHash: BigInt(
-            channel?.accessHash || ""
-          ) as unknown as bigInt.BigInteger,
-        }),
+        dest?.username ||
+        (BigInt(dest?.groupId || false) as unknown as bigInt.BigInteger),
       media: new Api.InputMediaDocumentExternal({
         url,
       }),

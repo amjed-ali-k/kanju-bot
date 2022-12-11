@@ -1,7 +1,6 @@
 import {
   IgApiClient,
   ReelsMediaFeedResponseItem,
-  StoryServiceInput,
   UserRepositorySearchResponseUsersItem,
 } from "instagram-private-api";
 import _ from "lodash";
@@ -19,11 +18,6 @@ export const igInit = async () => {
     process.env.IG_PASSWORD || ""
   );
   console.log("Logged in as ", loggedInUser.username);
-  // The same as preLoginFlow()
-  // Optionally wrap it to process.nextTick so we dont need to wait ending of this bunch of requests
-  // Create UserFeed instance to get loggedInUser's posts
-  // console.log(loggedInUser);
-
   // process.nextTick(async () => await ig.simulate.postLoginFlow());
 };
 

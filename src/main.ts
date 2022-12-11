@@ -53,6 +53,7 @@ const main = async () => {
     return "Skipped as it is night";
   } // Skip night
   const users = await getUsersToFetch();
+  // console.log("Users", users);
   const msgs = await Promise.all(
     users.map(async (user) => {
       return fetchAndForward(user);
@@ -69,27 +70,28 @@ const main = async () => {
   };
 };
 
-// main();
-
 const fetchAndForward = async (userType: UsersType) => {
   const stories = await getUserStories(await getUser(userType.username));
   return Promise.all(
     stories.map(async (storyItem) => {
       if (await isStorySent(storyItem.pk)) return;
+      const dest = userType.forwardGroup
+        ? { groupId: userType.forwardGroup }
+        : { username: userType.forwardChannel };
       if (storyItem.media_type === 1) {
         postPhotoToChannel(
           storyItem.image_versions2.candidates[0].url,
           parseInt(storyItem.pk),
-          userType.forwardChannel,
-          userType.message
+          userType.message,
+          dest
         );
       }
       if (storyItem.media_type === 2) {
         postOtherToChannel(
           storyItem.video_versions[0].url,
           parseInt(storyItem.pk),
-          userType.forwardChannel,
-          userType.message
+          userType.message,
+          dest
         );
       }
       await markStorySeen(storyItem);
