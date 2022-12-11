@@ -1,0 +1,26 @@
+{
+  "name": "kanju-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/lodash": "^4.14.191",
+    "@types/node": "^18.11.13",
+    "dotenv": "^16.0.3",
+    "instagram-private-api": "^1.45.3",
+    "lodash": "^4.17.21",
+    "re": "^0.1.4",
+    "re2": "^1.18.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  }
+}
