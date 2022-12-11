@@ -13,6 +13,9 @@ import {
   await igInit();
   await telegramInit();
   console.log("Initialized Bot");
+  console.info(
+    "Current Time is " + `${getCurrentTIme().format("DD-MM-YYYY h:mm:ss A")}`
+  );
   setInterval(async () => {
     if (getCurrentTIme().hour() < 10 && getCurrentTIme().hour() > 20) return; // Skip night
     const users = await getUsersToFetch();
