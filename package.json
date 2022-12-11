@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "dev": "ts-node ./src/main.ts --trace-warnings"
+    "dev": "ts-node ./src/main.ts --trace-warnings",
+    "run": "ts-node ./src/main.ts --trace-warnings"
   },
   "keywords": [],
   "author": "",

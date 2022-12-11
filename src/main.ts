@@ -12,6 +12,7 @@ import {
   // await populateUsers();
   await igInit();
   await telegramInit();
+  console.log("Initialized Bot");
   setInterval(async () => {
     if (getCurrentTIme().hour() < 10 && getCurrentTIme().hour() > 20) return; // Skip night
     const users = await getUsersToFetch();
