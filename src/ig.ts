@@ -1,23 +1,30 @@
 import {
+  AccountRepositoryLoginResponseLogged_in_user,
   IgApiClient,
   ReelsMediaFeedResponseItem,
   UserRepositorySearchResponseUsersItem,
 } from "instagram-private-api";
-import _ from "lodash";
+import bluebird from "bluebird";
 import * as dotenv from "dotenv";
 
 dotenv.config();
 
 const ig = new IgApiClient();
+let loggedInUser: AccountRepositoryLoginResponseLogged_in_user | null = null;
 
 export const igInit = async () => {
+  if (loggedInUser) {
+    console.log("Already logged in");
+    return;
+  }
   ig.state.generateDevice(process.env.IG_USERNAME || "");
   // await ig.simulate.preLoginFlow();
-  const loggedInUser = await ig.account.login(
+  loggedInUser = await ig.account.login(
     process.env.IG_USERNAME || "",
     process.env.IG_PASSWORD || ""
   );
   console.log("Logged in as ", loggedInUser.username);
+  bluebird.delay(2000);
   // process.nextTick(async () => await ig.simulate.postLoginFlow());
 };
 

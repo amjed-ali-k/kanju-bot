@@ -14,6 +14,7 @@ import {
 } from "./db";
 
 import express from "express";
+import Bluebird from "bluebird";
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -37,6 +38,7 @@ const main = async () => {
   console.info(
     "Current Time is " + `${getCurrentTIme().format("DD-MM-YYYY h:mm:ss A")}`
   );
+
   const time = await getLastRuntime();
   const intreval = await getIntrval();
   const diff = getCurrentTIme().diff(time);
@@ -44,18 +46,21 @@ const main = async () => {
     return `Too soon! Will run ${getTimetoMs(intreval - diff)}`;
   await updateLastRuntime();
 
-  await igInit();
-  await telegramInit();
-  console.log("Initialized Bot");
-  // setInterval(async () => {
   if (getCurrentTIme().hour() < 10 && getCurrentTIme().hour() > 20) {
     console.log("Skipped as it is night");
     return "Skipped as it is night";
   } // Skip night
+
+  await igInit();
+  await telegramInit();
+  console.log("Initialized Bot");
+
+  // setInterval(async () => {
   const users = await getUsersToFetch();
   // console.log("Users", users);
   const msgs = await Promise.all(
     users.map(async (user) => {
+      Bluebird.delay(1000);
       return fetchAndForward(user);
     })
   );
@@ -64,6 +69,7 @@ const main = async () => {
       `${getCurrentTIme().format("DD-MM-YYYY h:mm:ss A")}`
   );
   // }, 2 * 60 * 60 * 1000);
+
   return {
     message: "Success",
     data: msgs,
